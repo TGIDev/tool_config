@@ -1,4 +1,4 @@
-" -----------------------------------------"
+
 " VIM DEFAULT VIMRC CONFIG
 " -----------------------------------------"
 "
@@ -65,12 +65,16 @@ set autochdir
 
 call plug#begin()
 
-Plug 'https://github.com/vim-airline/vim-airline'			" Status bar
-Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
-Plug 'https://github.com/preservim/nerdtree'				" NerdTree
-Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'https://github.com/vim-airline/vim-airline'			" Status bar
+    Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
+    Plug 'https://github.com/preservim/nerdtree'				" NerdTree
+    Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
 
 
+    Plug 'prabirshrestha/vim-lsp'               " LSP CLIENT
+    Plug 'mattn/vim-lsp-settings'               " LSP manager
+    Plug 'prabirshrestha/asyncomplete.vim'      " Asyncronous machine
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'  " linker for LSP
 call plug#end()
 
 
@@ -83,7 +87,7 @@ if has("gui_running")
 else
     if has("macunix")
       set background=dark
-      colorscheme onehalfdark
+      colorscheme onedark
   else
       set background=dark
       colorscheme onedark
@@ -264,3 +268,9 @@ endif
 let g:airline_theme='deus'
 let g:airline_section_c_only_filename = 1
 
+"------------------------------------------------------------"
+"AsyncComplete
+"------------------------------------------------------------"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
