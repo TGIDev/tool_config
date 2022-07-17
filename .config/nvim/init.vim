@@ -1,138 +1,134 @@
-"------------------------------------------------------------"
-"  PLUGINS  -------------------------------------------------"
-"------------------------------------------------------------"
-if !exists('g:vscode')
-    call plug#begin()
 
-    Plug 'https://github.com/vim-airline/vim-airline'			" Status bar
-    Plug 'https://github.com/vim-airline/vim-airline-themes'	" airline theme
-    Plug 'https://github.com/preservim/nerdtree'				" NerdTree
+" -----------------------------------------"
+" USER ADDED CONFIG
+" -----------------------------------------"
+" --- SUMMAR ---
+"   1. Plugin intstall  
+"   2. SETs 
+"   3. CONFIG FOR FILES
+"   4. BACKUP DIR 
+"   5. PLUGIN CONFIG
+"       5.1 NERcommenter
+"       5.2 Nerdtree settings
+"       5.3 Airline settings
+"       5.4 CTRLP
+
+"------------------------------------------------------------"
+"  1. Plugin intstall
+"------------------------------------------------------------"
+
+call plug#begin()
+    " Appearance
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'vim-airline/vim-airline'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
 
-    Plug 'https://github.com/nvim-lua/plenary.nvim'				" Telescope dependencie
-    Plug 'https://github.com/nvim-telescope/telescope.nvim' 	" Telescope
+    " Utilities
+    Plug 'sheerun/vim-polyglot'
+    Plug 'jiangmiao/auto-pairs'
+    
+    Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'https://github.com/preservim/nerdtree'				" NerdTree
+    Plug 'preservim/nerdcommenter'
+    
+    Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
 
-    call plug#end()
-endif
+    " Completion / linters / formatters
+"    Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'} "TOCONFIGURE
+"    Plug 'plasticboy/vim-markdown'                                        "TOCONFIGURE
+
+    " Git
+    Plug 'https://github.com/tpope/vim-fugitive'        "Git integration
+    Plug 'airblade/vim-gitgutter'
+call plug#end()
+
 
 "------------------------------------------------------------"
-"  SETs -----------------------------------------------------"
+"  2. SETs 
 "------------------------------------------------------------"
-
-" To check if neovim-qt is running, use `exists('g:GuiLoaded')`,
-" see https://github.com/equalsraf/neovim-qt/issues/219
-if exists('g:GuiLoaded')
-  " call GuiWindowMaximized(1)
-  GuiTabline 0
-  GuiPopupmenu 0
-  GuiLinespace 2
-endif
-
 
 set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
-set cul             " Highlight current line
-set cc=+1           " Put a ruler on max line width
-set number          " Set numbering lines
-set hidden          " Keeps every buffer inside even if not saved
-set noerrorbells    " Not ring the bell for error messages
-set belloff=all     " Remove all bell sounds
-set smartcase       " Do a capital search only if capitals on the search
-set incsearch       " Will start highlight the current search word if present on the page
-set scrolloff=8     " Start scrolling the page 8line before bottom
-set signcolumn=yes  " Add side column for every error/pluggin messages
-let mapleader =","  " Map leader to comma
-set splitright      " Will split only on the right hand side when calling a vsplit
-set splitbelow      " Will split bellow when calling an horizontal split
-set nowrap          " Will not wrap text after 80 lines
-set tw=80           " Set the wrap column number to 80
-set relativenumber  " Set the relative number for curent line
-set path+=**        " Will automatically add subfolder for :find command
-set wildmenu        " Better menu navigation
-set ignorecase      " Use case insensitive search, except when using capital letters
-set tabstop=4       " Width of tab character
-set softtabstop=4   " Fine tunes the amount of white space to be added
-set shiftwidth=4    " Determines the amount of whitespace to add in normal mode        
-set expandtab       " When this option is enabled, vi will use spaces instead of tabsW
+set cul             " highlight current line
+set cc=+1           " put a ruler on max line width
+set number          " set numbering lines
+set hidden          " keeps every buffer inside even if not saved
+set noerrorbells    " not ring the bell for error messages
+set smartcase       " do a capital search only if capitals on the search
+set incsearch       " will start highlight the current search word if present on the page
+set scrolloff=8     " start scrolling the page 8line before bottom
+set signcolumn=yes  " add side column for every error/pluggin messages
+let mapleader =","  " map leader to comma
+set splitright      " will split only on the right hand side when calling a vsplit
+set splitbelow      " will split bellow when calling an horizontal split
+"set tw=80           " set the wrap column number to 80
+set nowrap          " will not wrap text after 80 lines
+set relativenumber  " set the relative number for curent line
+set belloff=all     " remove all bell sounds
+set path+=**        " will automatically add subfolder for :find command
+set wildmenu        " Display command line’s tab complete options as a menu
+set lazyredraw      " don't update screen for every macro occurence
+set ignorecase
+set smartcase
+set encoding=utf-8
+set foldmethod=indent   "Fold based on indention levels.
+set foldnestmax=3       "Only fold up to three nested levels.
+set nofoldenable        "Disable folding by default.
+set tabstop     =4
+set softtabstop =4
+set shiftwidth  =4
+set expandtab
+set smartindent
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+" set t_Co=256                " Enable 256 bits colors
+
+set background=dark
+colorscheme onedark
+
 "------------------------------------------------------------"
-" COLORSCHEME
+"  3. CONFIG FOR FILES
 "------------------------------------------------------------"
-if !exists('g:vscode')
-	colorscheme onedark
-endif
-"------------------------------------------------------------"
-"  MAPPINGS
-"------------------------------------------------------------"
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+filetype on
+" Enable syntax highlighting
+syntax on
 
-"-------------   NORMAL MODE MAPPINGS -----------------------"
 
-" CTRL+H will clear highlight on words
-nnoremap <C-H> :nohl<CR>
-" replace <C-F> by SPACE key to move pages
-noremap <SPACE> <C-F>
-
-if !exists("g:vs-code")
-	"Mapping for window navigation
-	nnoremap <M-j> <C-w>j
-	nnoremap <M-k> <C-w>k
-	nnoremap <M-m> <C-w>m
-	nnoremap <M-l> <C-w>l
-	"MAP tab movement
-	nnoremap <Leader>n :tabnext<CR>
-	nnoremap <Leader>b :tabprevious<CR>
-	nnoremap <Leader>t :tabnew<CR>
-	"Map buffer deletion clean
-	nnoremap <Leader>d :bn \| bd#<CR>
-	"Clean endline spaces
-	nnoremap <Leader>ds :%s/\s\+$//g<CR>:nohl<CR>
-endif
-	" paste from clipboard
-	nnoremap <Leader>p "*p
-
-"-------------   VISUAL MODE MAPPINGS -----------------------"
-
-set clipboard+=unnamedplus
-if exists("g:vs-code")
+"-------------------------------------------------------------"
+"   4. BACKUP DIR 
+"CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
+"-------------------------------------------------------------"
+if has("win32")
+  set backup
+  " the // at the end means to use path in file name like
+  " Users%tgiol%tmp%myfile.txt.swp
+  set backupdir=C:\\Temp//
+  set dir=C:\\Temp//
+  set undodir=C:\\Temp//
 else
-	vnoremap <Leader>y "*y
-	vnoremap <Leader>yy "*yy
+  set backup
+  " tell vim where to put its backup files
+  set backupdir=~/vimbackupdir/
+  " tell vim where to put swap files
+  set dir=~/vimbackupdir/
+  set undodir=~/vimbackupdir/
 endif
-""BLOC movement
-" Allow bloc indent
-vnoremap < <gv
-vnoremap > >gv
-vnoremap * 0
-"block comment
-vnoremap <Leader>c :norm I
-"block uncomment
-" /!\ This won't work if there is no space at the begining of the line
-vnoremap <Leader>cu :norm 0wdw0x<CR>
+"------------------------------------------------------------"
+"   5. PLUGIN CONFIG
+"------------------------------------------------------------"
+"------------------------------------------------------------"
+"   5.1 NERcommenter
+"------------------------------------------------------------"
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
 
-"-------------   COMMAND MAPPINGS -----------------------"
-
-if !exists("g:vs-code")
-	"map command for vertical terminal
-	cnoremap vt vert term ++kill="kill" ++cols=80
-endif
-
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
-"  Pluggins config
-"------------------------------------------------------------"
-
-"------------------------------------------------------------"
-"Airline settings
-"------------------------------------------------------------"
-let g:airline_theme='deus'
-let g:airline_section_c_only_filename = 1
-"------------------------------------------------------------"
-"Telescope settings
-"------------------------------------------------------------"
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-"------------------------------------------------------------"
-"Nerdtree settings
+"   5.2 Nerdtree settings
 "------------------------------------------------------------"
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
@@ -142,3 +138,14 @@ nnoremap <C-f> :NERDTreeFind<CR>
 if !exists('g:vscode')
 	autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 endif
+
+"------------------------------------------------------------"
+"   5.3 Airline settings
+"------------------------------------------------------------"
+let g:airline_theme='deus'
+let g:airline_section_c_only_filename = 1
+
+"------------------------------------------------------------"
+"   5.4 CTRLP
+"------------------------------------------------------------"
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
