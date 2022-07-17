@@ -5,13 +5,14 @@
 " --- SUMMAR ---
 "   1. Plugin intstall  
 "   2. SETs 
-"   3. CONFIG FOR FILES
-"   4. BACKUP DIR 
-"   5. PLUGIN CONFIG
-"       5.1 NERcommenter
-"       5.2 Nerdtree settings
-"       5.3 Airline settings
-"       5.4 CTRLP
+"   3. MAPPINGS
+"   4. CONFIG FOR FILES
+"   5. BACKUP DIR 
+"   6. PLUGIN CONFIG
+"       6.1 NERcommenter
+"       6.2 Nerdtree settings
+"       6.3 Airline settings
+"       6.4 CTRLP
 
 "------------------------------------------------------------"
 "  1. Plugin intstall
@@ -36,7 +37,6 @@ call plug#begin()
 
     " Completion / linters / formatters
 "    Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'} "TOCONFIGURE
-"    Plug 'plasticboy/vim-markdown'                                        "TOCONFIGURE
 
     " Git
     Plug 'https://github.com/tpope/vim-fugitive'        "Git integration
@@ -86,7 +86,52 @@ set background=dark
 colorscheme onedark
 
 "------------------------------------------------------------"
-"  3. CONFIG FOR FILES
+"   3. MAPPINGS
+"------------------------------------------------------------"
+"
+"------------------------------------------------------------"
+"   3.1 NORMAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+" CTRL+H will clear highlight on words
+nnoremap <C-H> :nohl<CR>
+" replace <C-F> by SPACE key to move pages
+noremap <SPACE> <C-F>
+"Mapping for window navigation
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-m> <C-w>m
+nnoremap <M-l> <C-w>l
+"MAP tab movement
+nnoremap <Leader>n :tabnext<CR>
+nnoremap <Leader>b :tabprevious<CR>
+nnoremap <Leader>t :tabnew<CR>
+"Map buffer deletion clean
+nnoremap <Leader>d :bn \| bd#<CR>
+"Clean endline spaces
+nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
+" paste from clipboard
+nnoremap <Leader>p "*p
+
+"------------------------------------------------------------"
+"   3.2 VISUAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+vnoremap <Leader>y "*y
+vnoremap <Leader>yy "*yy
+""BLOC movement
+" Allow bloc indent
+vnoremap < <gv
+vnoremap > >gv
+
+"------------------------------------------------------------"
+"   3.3 COMMAND MAPPINGS -----------------------"
+"------------------------------------------------------------"
+"map command for vertical terminal
+cnoremap vt vert term ++kill="kill" ++cols=80
+
+"------------------------------------------------------------"
+"  4. CONFIG FOR FILES
 "------------------------------------------------------------"
 " Attempt to determine the type of a file based on its name and possibly its
 " contents. Use this to allow intelligent auto-indenting for each filetype,
@@ -98,7 +143,7 @@ syntax on
 
 
 "-------------------------------------------------------------"
-"   4. BACKUP DIR 
+"   5. BACKUP DIR 
 "CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
 "-------------------------------------------------------------"
 if has("win32")
@@ -117,10 +162,10 @@ else
   set undodir=~/vimbackupdir/
 endif
 "------------------------------------------------------------"
-"   5. PLUGIN CONFIG
+"   6. PLUGIN CONFIG
 "------------------------------------------------------------"
 "------------------------------------------------------------"
-"   5.1 NERcommenter
+"   6.1 NERcommenter
 "------------------------------------------------------------"
 " Create default mappings
 let g:NERDCreateDefaultMappings = 1
@@ -128,7 +173,7 @@ let g:NERDCreateDefaultMappings = 1
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
-"   5.2 Nerdtree settings
+"   6.2 Nerdtree settings
 "------------------------------------------------------------"
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
@@ -140,12 +185,17 @@ if !exists('g:vscode')
 endif
 
 "------------------------------------------------------------"
-"   5.3 Airline settings
+"   6.3 Airline settings
 "------------------------------------------------------------"
 let g:airline_theme='deus'
 let g:airline_section_c_only_filename = 1
 
 "------------------------------------------------------------"
-"   5.4 CTRLP
+"   6.4 CTRLP
 "------------------------------------------------------------"
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode = 'c'     " Find in the directory of the current file if no folder specified
+" Search into buffer using Ctrl+B
+nnoremap <C-b> :CrlPBuffer
+
+
