@@ -6,6 +6,9 @@
 "   1. Plugin intstall  
 "   2. SETs 
 "   3. MAPPINGS
+"       3.1 NORMAL MODE MAPPINGS
+"       3.2 VISUAL MODE MAPPINGS
+"       3.3 COMMAND MODE MAPPINGS
 "   4. CONFIG FOR FILES
 "   5. BACKUP DIR 
 "   6. PLUGIN CONFIG
@@ -21,6 +24,7 @@
 call plug#begin()
     " Appearance
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'https://github.com/morhetz/gruvbox'
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
     Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
@@ -81,9 +85,12 @@ set expandtab
 set smartindent
 set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
 " set t_Co=256                " Enable 256 bits colors
+" force cursor in line for insert mode and block for the rest
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
 
 set background=dark
-colorscheme onedark
+colorscheme gruvbox
 
 "------------------------------------------------------------"
 "   3. MAPPINGS
@@ -175,10 +182,11 @@ let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
 "   6.2 Nerdtree settings
 "------------------------------------------------------------"
-nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>f :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+let g:NERDTreeWinSize= 50
 " Open the existing NERDTree on each new tab.
 if !exists('g:vscode')
 	autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
@@ -193,9 +201,9 @@ let g:airline_section_c_only_filename = 1
 "------------------------------------------------------------"
 "   6.4 CTRLP
 "------------------------------------------------------------"
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 let g:ctrlp_working_path_mode = 'c'     " Find in the directory of the current file if no folder specified
 " Search into buffer using Ctrl+B
-nnoremap <C-b> :CrlPBuffer
+nnoremap <C-b> :CtrlPBuffer<CR>
 
 

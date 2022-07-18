@@ -1,100 +1,55 @@
 
-" VIM DEFAULT VIMRC CONFIG
-" -----------------------------------------"
-"
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2019 Dec 17
-"
-" To use it, copy it to
-"	       for Unix:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"	 for MS-Windows:  $VIM\_vimrc
-"	      for Haiku:  ~/config/settings/vim/vimrc
-"	    for OpenVMS:  sys$login:.vimrc
-
-" When started as "evim", evim.vim will already have done these settings, bail
-" out.
-if v:progname =~? "evim"
-  finish
-endif
-
-" Get the defaults that most users want.
-"source $VIMRUNTIME/defaults.vim
-
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file (restore to previous version)
-  if has('persistent_undo')
-    set undofile	" keep an undo file (undo changes after closing)
-  endif
-endif
-
-if &t_Co > 2 || has("gui_running")
-  " Switch on highlighting the last used search pattern.
-  set hlsearch
-endif
-
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-augroup END
-
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-"if has('syntax') && has('eval')
-  "packadd! matchit
-"endif
-
-
 " -----------------------------------------"
 " USER ADDED CONFIG
 " -----------------------------------------"
+" --- SUMMAR ---
+"   1. Plugin intstall  
+"   2. SETs 
+"   3. MAPPINGS
+"       3.1 NORMAL MODE MAPPINGS
+"       3.2 VISUAL MODE MAPPINGS
+"       3.3 COMMAND MODE MAPPINGS
+"   4. CONFIG FOR FILES
+"   5. BACKUP DIR 
+"   6. PLUGIN CONFIG
+"       6.1 NERcommenter
+"       6.2 Nerdtree settings
+"       6.3 Airline settings
+"       6.4 CTRLP
 
-"STARTING
-set autochdir
+"------------------------------------------------------------"
+"  1. Plugin intstall
+"------------------------------------------------------------"
 
 call plug#begin()
-
-    Plug 'https://github.com/vim-airline/vim-airline'			" Status bar
-    Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
-    Plug 'https://github.com/preservim/nerdtree'				" NerdTree
+    " Appearance
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'https://github.com/morhetz/gruvbox'
+    Plug 'vim-airline/vim-airline'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
 
+    " Utilities
+    Plug 'sheerun/vim-polyglot'
+    Plug 'jiangmiao/auto-pairs'
+    
+    Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
+    Plug 'https://github.com/preservim/nerdtree'				" NerdTree
+    Plug 'preservim/nerdcommenter'
+    
+    Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
 
-    Plug 'prabirshrestha/vim-lsp'               " LSP CLIENT
-    Plug 'mattn/vim-lsp-settings'               " LSP manager
-    Plug 'prabirshrestha/asyncomplete.vim'      " Asyncronous machine
-    Plug 'prabirshrestha/asyncomplete-lsp.vim'  " linker for LSP
+    " Completion / linters / formatters
+"    Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'} "TOCONFIGURE
+
+    " Git
+    Plug 'https://github.com/tpope/vim-fugitive'        "Git integration
+    Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 
 "------------------------------------------------------------"
-" SET colors
-"------------------------------------------------------------"
-if has("gui_running")
-  set background=dark
-  colorscheme onehalfdark
-else
-    if has("macunix")
-      set background=dark
-      colorscheme onedark
-  else
-      set background=dark
-      colorscheme onedark
-  endif
-endif
-"------------------------------------------------------------"
-"  SETs -----------------------------------------------------"
+"  2. SETs 
 "------------------------------------------------------------"
 
 set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
@@ -110,7 +65,7 @@ set signcolumn=yes  " add side column for every error/pluggin messages
 let mapleader =","  " map leader to comma
 set splitright      " will split only on the right hand side when calling a vsplit
 set splitbelow      " will split bellow when calling an horizontal split
-set tw=80           " set the wrap column number to 80
+"set tw=80           " set the wrap column number to 80
 set nowrap          " will not wrap text after 80 lines
 set relativenumber  " set the relative number for curent line
 set belloff=all     " remove all bell sounds
@@ -128,44 +83,22 @@ set softtabstop =4
 set shiftwidth  =4
 set expandtab
 set smartindent
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+" set t_Co=256                " Enable 256 bits colors
+" force cursor in line for insert mode and block for the rest
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
 
-"SHELL config : change default shell for gitbash on windows (Require gitbash)
-if has("win32")
-  set shell=sh
-endif
-
-"------------------------------------------------------------"
-"  CONFIG FOR FILES
-"------------------------------------------------------------"
-" Attempt to determine the type of a file based on its name and possibly its
-" contents. Use this to allow intelligent auto-indenting for each filetype,
-" and for plugins that are filetype specific.
-filetype indent plugin on
-filetype on
-" Enable syntax highlighting
-syntax on
+set background=dark
+colorscheme gruvbox
 
 "------------------------------------------------------------"
-"  SNIPPETS PART
-" User snipet definition
-" note : path to be updated depending on os
+"   3. MAPPINGS
 "------------------------------------------------------------"
 "
-" "-------------    VHDL SNIPETS ------------------------------"
-" if has("win32")
-"   nnoremap ;proc :-1read $HOME/vimfiles/templates/.skeleton_vhdl_process.vhd<CR>ea
-" else
-"   nnoremap ;proc :-1read $HOME/.vim/templates/.skeleton_vhdl_process.vhd<CR>ea
-" endif
-" "-------------    VHDL SNIPETS ------------------------------"
-" " will be called when creating the file :
-" autocmd BufNewFile *.py 0r ~/vimfiles/templates/skeleton.py
-
 "------------------------------------------------------------"
-"  MAPPINGS
+"   3.1 NORMAL MODE MAPPINGS
 "------------------------------------------------------------"
-"
-"-------------   NORMAL MODE MAPPINGS -----------------------"
 "
 " CTRL+H will clear highlight on words
 nnoremap <C-H> :nohl<CR>
@@ -186,7 +119,10 @@ nnoremap <Leader>d :bn \| bd#<CR>
 nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 " paste from clipboard
 nnoremap <Leader>p "*p
-"-------------   VISUAL MODE MAPPINGS -----------------------"
+
+"------------------------------------------------------------"
+"   3.2 VISUAL MODE MAPPINGS
+"------------------------------------------------------------"
 "
 vnoremap <Leader>y "*y
 vnoremap <Leader>yy "*yy
@@ -194,41 +130,27 @@ vnoremap <Leader>yy "*yy
 " Allow bloc indent
 vnoremap < <gv
 vnoremap > >gv
-vnoremap * 0
-"block comment
-vnoremap <Leader>c :norm I
-"block uncomment
-" /!\ This won't work if there is no space at the begining of the line
-vnoremap <Leader>cu :norm 0wdw0x<CR>
 
-"-------------   COMMAND MAPPINGS -----------------------"
+"------------------------------------------------------------"
+"   3.3 COMMAND MAPPINGS -----------------------"
+"------------------------------------------------------------"
 "map command for vertical terminal
 cnoremap vt vert term ++kill="kill" ++cols=80
 
+"------------------------------------------------------------"
+"  4. CONFIG FOR FILES
+"------------------------------------------------------------"
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+filetype on
+" Enable syntax highlighting
+syntax on
 
-"------------------------------------------------------------"
-"GUI OPTIONS FOR GVIM
-"------------------------------------------------------------"
-if !has("gui_macvim")
-   set go-=T "remove the toolbar
-   set go-=m "remove the menu bar
-   set go-=R "remove the right hand side scroll bar
-   set go-=r "remove the right hand side scroll bar
-   set go-=b "remove the horizontal scroll bar
-   set guifont=Lucida_Console:h9:cANSI:qDRAFT
-endif
-if has("gui_running")
-  "GVIM FULLSCREEN
-  map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
-endif
 
-"Enable help pages
-silent! helptags ALL
-"------------------------------------------------------------"
-" VIM'S TEMPFILES OPTIONS
-"------------------------------------------------------------"
 "-------------------------------------------------------------"
-"Set backup and swap file directory
+"   5. BACKUP DIR 
 "CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
 "-------------------------------------------------------------"
 if has("win32")
@@ -246,31 +168,42 @@ else
   set dir=~/vimbackupdir/
   set undodir=~/vimbackupdir/
 endif
+"------------------------------------------------------------"
+"   6. PLUGIN CONFIG
+"------------------------------------------------------------"
+"------------------------------------------------------------"
+"   6.1 NERcommenter
+"------------------------------------------------------------"
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
 
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
-" PLUGINGS PART
+"   6.2 Nerdtree settings
 "------------------------------------------------------------"
-"------------------------------------------------------------"
-"Nerdtree settings
-"------------------------------------------------------------"
-nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>f :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+let g:NERDTreeWinSize= 50
 " Open the existing NERDTree on each new tab.
 if !exists('g:vscode')
 	autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 endif
 
 "------------------------------------------------------------"
-"Airline settings
+"   6.3 Airline settings
 "------------------------------------------------------------"
 let g:airline_theme='deus'
 let g:airline_section_c_only_filename = 1
 
 "------------------------------------------------------------"
-"AsyncComplete
+"   6.4 CTRLP
 "------------------------------------------------------------"
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode = 'c'     " Find in the directory of the current file if no folder specified
+" Search into buffer using Ctrl+B
+nnoremap <C-b> :CtrlPBuffer<CR>
+
+
