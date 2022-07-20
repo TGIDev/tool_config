@@ -119,7 +119,19 @@ nnoremap <Leader>d :bn \| bd#<CR>
 nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 " paste from clipboard
 nnoremap <Leader>p "*p
-
+" Vimgrep shortcut
+map <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
+if has("win32")
+    " Same with SystemVerilog files
+    map <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.sv" <Bar> cw<CR>
+    " Same with python files
+    map <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.py" <Bar> cw<CR>
+else
+    " Same with SystemVerilog files
+    map <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.sv" <Bar> cw<CR>
+    " Same with python files
+    map <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
+endif
 "------------------------------------------------------------"
 "   3.2 VISUAL MODE MAPPINGS
 "------------------------------------------------------------"
@@ -189,7 +201,7 @@ nnoremap <C-f> :NERDTreeFind<CR>
 let g:NERDTreeWinSize= 50
 " Open the existing NERDTree on each new tab.
 if !exists('g:vscode')
-	autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+    autocmd BufWinEnter * if &buftype != 'quickfix' && getcmdwintype() == '' | silent NERDTreeMirror | endif
 endif
 
 "------------------------------------------------------------"
@@ -202,8 +214,7 @@ let g:airline_section_c_only_filename = 1
 "   6.4 CTRLP
 "------------------------------------------------------------"
 "let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-let g:ctrlp_working_path_mode = 'c'     " Find in the directory of the current file if no folder specified
+let g:ctrlp_working_path_mode = 'a'     " Find in the directory of the current file if no folder specified
 " Search into buffer using Ctrl+B
 nnoremap <C-b> :CtrlPBuffer<CR>
-
 
