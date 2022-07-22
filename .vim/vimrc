@@ -9,9 +9,10 @@
 "       3.1 NORMAL MODE MAPPINGS
 "       3.2 VISUAL MODE MAPPINGS
 "       3.3 COMMAND MODE MAPPINGS
-"   4. CONFIG FOR FILES
-"   5. BACKUP DIR 
-"   6. PLUGIN CONFIG
+"   4. SNIPPETS
+"   5. CONFIG FOR FILES
+"   6. BACKUP DIR 
+"   7. PLUGIN CONFIG
 "       6.1 NERcommenter
 "       6.2 Nerdtree settings
 "       6.3 Airline settings
@@ -25,6 +26,8 @@ call plug#begin()
     " Appearance
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
     Plug 'https://github.com/morhetz/gruvbox'
+    Plug 'arcticicestudio/nord-vim'
+
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
     Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
@@ -54,19 +57,21 @@ call plug#end()
 
 set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
 set cul             " highlight current line
-set cc=+1           " put a ruler on max line width
+" set cc=+20          " put a ruler on max line width
 set number          " set numbering lines
 set hidden          " keeps every buffer inside even if not saved
 set noerrorbells    " not ring the bell for error messages
 set smartcase       " do a capital search only if capitals on the search
 set incsearch       " will start highlight the current search word if present on the page
-set scrolloff=8     " start scrolling the page 8line before bottom
+set scrolloff=20    " start scrolling the page 8line before bottom
 set signcolumn=yes  " add side column for every error/pluggin messages
 let mapleader =","  " map leader to comma
 set splitright      " will split only on the right hand side when calling a vsplit
 set splitbelow      " will split bellow when calling an horizontal split
-"set tw=80           " set the wrap column number to 80
 set nowrap          " will not wrap text after 80 lines
+set textwidth=0     " prevent auto wrapping"
+set wrapmargin=0    " prevent auto wrapping"
+"set tw=80           " set the wrap column number to 80
 set relativenumber  " set the relative number for curent line
 set belloff=all     " remove all bell sounds
 set path+=**        " will automatically add subfolder for :find command
@@ -150,7 +155,27 @@ vnoremap > >gv
 cnoremap vt vert term ++kill="kill" ++cols=80
 
 "------------------------------------------------------------"
-"  4. CONFIG FOR FILES
+"  4. SNIPPETS
+"------------------------------------------------------------"
+
+runtime snippets.vim
+"-------------    SYSTEMVERILOG  SNIPETS --------------------"
+" if has("win32")
+  " nnoremap ;svff    :-1read $HOME/vimfiles/snippets/.sv_always_ff.sv<CR>e
+  " nnoremap ;svcomb  :-1read $HOME/vimfiles/snippets/.sv_always_comb.sv<CR>e
+  " nnoremap ;svcase  :-1read $HOME/vimfiles/snippets/.sv_case.sv<CR>f(a
+  " nnoremap ;svnf    :-1read $HOME/vimfiles/snippets/.sv_new_file_sic.sv<CR>14jA
+" else
+  " nnoremap ;svff    :-1read $HOME/.vim/snippets/.sv_always_ff.sv<CR>e
+  " nnoremap ;svcomb  :-1read $HOME/.vim/snippets/.sv_always_comb.sv<CR>e
+  " nnoremap ;svcase  :-1read $HOME/.vim/snippets/.sv_case.sv<CR>f(a
+  " nnoremap ;svnf    :-1read $HOME/.vim/snippets/.sv_new_file_sic.sv<CR>14jA
+" endif
+
+
+
+"------------------------------------------------------------"
+"  5. CONFIG FOR FILES
 "------------------------------------------------------------"
 " Attempt to determine the type of a file based on its name and possibly its
 " contents. Use this to allow intelligent auto-indenting for each filetype,
@@ -162,7 +187,7 @@ syntax on
 
 
 "-------------------------------------------------------------"
-"   5. BACKUP DIR 
+"   6. BACKUP DIR 
 "CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
 "-------------------------------------------------------------"
 if has("win32")
@@ -181,10 +206,10 @@ else
   set undodir=~/vimbackupdir/
 endif
 "------------------------------------------------------------"
-"   6. PLUGIN CONFIG
+"   7. PLUGIN CONFIG
 "------------------------------------------------------------"
 "------------------------------------------------------------"
-"   6.1 NERcommenter
+"   7.1 NERcommenter
 "------------------------------------------------------------"
 " Create default mappings
 let g:NERDCreateDefaultMappings = 1
@@ -192,7 +217,7 @@ let g:NERDCreateDefaultMappings = 1
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
-"   6.2 Nerdtree settings
+"   7.2 Nerdtree settings
 "------------------------------------------------------------"
 nnoremap <leader>f :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
@@ -205,13 +230,13 @@ if !exists('g:vscode')
 endif
 
 "------------------------------------------------------------"
-"   6.3 Airline settings
+"   7.3 Airline settings
 "------------------------------------------------------------"
 let g:airline_theme='deus'
 let g:airline_section_c_only_filename = 1
 
 "------------------------------------------------------------"
-"   6.4 CTRLP
+"   7.4 CTRLP
 "------------------------------------------------------------"
 "let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 let g:ctrlp_working_path_mode = 'a'     " Find in the directory of the current file if no folder specified
