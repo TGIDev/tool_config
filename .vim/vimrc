@@ -95,7 +95,7 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 
 set background=dark
-colorscheme Nord
+colorscheme nord
 
 "------------------------------------------------------------"
 "   3. MAPPINGS
@@ -127,17 +127,17 @@ nnoremap <Leader>p "*p
 "Replace Word under cursor
 noremap <F3> :%s/\<<C-r><C-w>\>/
 " Vimgrep shortcut
-map <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
+noremap <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
 if has("win32")
     " Same with SystemVerilog files
-    map <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.sv" <Bar> cw<CR>
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.sv" <Bar> cw<CR>
     " Same with python files
-    map <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.py" <Bar> cw<CR>
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.py" <Bar> cw<CR>
 else
     " Same with SystemVerilog files
-    map <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.sv" <Bar> cw<CR>
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.sv" <Bar> cw<CR>
     " Same with python files
-    map <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
 endif
 "------------------------------------------------------------"
 "   3.2 VISUAL MODE MAPPINGS
