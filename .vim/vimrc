@@ -3,15 +3,15 @@
 " USER ADDED CONFIG
 " -----------------------------------------"
 " --- SUMMAR ---
-"   1. Plugin intstall  
-"   2. SETs 
+"   1. Plugin intstall
+"   2. SETs
 "   3. MAPPINGS
 "       3.1 NORMAL MODE MAPPINGS
 "       3.2 VISUAL MODE MAPPINGS
 "       3.3 COMMAND MODE MAPPINGS
 "   4. SNIPPETS
 "   5. CONFIG FOR FILES
-"   6. BACKUP DIR 
+"   6. BACKUP DIR
 "   7. PLUGIN CONFIG
 "       6.1 NERcommenter
 "       6.2 Nerdtree settings
@@ -35,11 +35,11 @@ call plug#begin()
     " Utilities
     Plug 'sheerun/vim-polyglot'
     Plug 'jiangmiao/auto-pairs'
-    
+
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
     Plug 'https://github.com/preservim/nerdtree'				" NerdTree
     Plug 'preservim/nerdcommenter'
-    
+
     Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
 
     " Completion / linters / formatters
@@ -52,7 +52,7 @@ call plug#end()
 
 
 "------------------------------------------------------------"
-"  2. SETs 
+"  2. SETs
 "------------------------------------------------------------"
 
 set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
@@ -95,7 +95,7 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 
 set background=dark
-colorscheme gruvbox
+colorscheme Nord
 
 "------------------------------------------------------------"
 "   3. MAPPINGS
@@ -124,6 +124,8 @@ nnoremap <Leader>d :bn \| bd#<CR>
 nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 " paste from clipboard
 nnoremap <Leader>p "*p
+"Replace Word under cursor
+noremap <F3> :%s/\<<C-r><C-w>\>/
 " Vimgrep shortcut
 map <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
 if has("win32")
@@ -153,6 +155,11 @@ vnoremap > >gv
 "------------------------------------------------------------"
 "map command for vertical terminal
 cnoremap vt vert term ++kill="kill" ++cols=80
+
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
 
 "------------------------------------------------------------"
 "  4. SNIPPETS
@@ -187,7 +194,7 @@ syntax on
 
 
 "-------------------------------------------------------------"
-"   6. BACKUP DIR 
+"   6. BACKUP DIR
 "CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
 "-------------------------------------------------------------"
 if has("win32")
