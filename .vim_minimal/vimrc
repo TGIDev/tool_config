@@ -1,0 +1,175 @@
+" -----------------------------------------"
+" USER ADDED CONFIG
+" -----------------------------------------"
+" --- SUMMAR ---
+"   2. SETs
+"   3. MAPPINGS
+"       3.1 NORMAL MODE MAPPINGS
+"       3.2 VISUAL MODE MAPPINGS
+"       3.3 COMMAND MODE MAPPINGS
+"   4. SNIPPETS
+"   5. CONFIG FOR FILES
+"   6. BACKUP DIR
+
+"------------------------------------------------------------"
+"  1. Plugin intstall
+"------------------------------------------------------------"
+" NO PLUGIN == Minimal vim configuration
+"------------------------------------------------------------"
+"  2. SETs
+"------------------------------------------------------------"
+
+set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
+set cul             " highlight current line
+" set cc=+20          " put a ruler on max line width
+set number          " set numbering lines
+set relativenumber  " set the relative number for curent line
+set hidden          " keeps every buffer inside even if not saved
+
+set autowrite       " Auto write the file content on each window view changes
+set smartcase       " do a capital search only if capitals on the search
+set incsearch       " will start highlight the current search word if present on the page
+set scrolloff=20    " start scrolling the page 8line before bottom
+let mapleader =","  " map leader to comma
+set splitright      " will split only on the right hand side when calling a vsplit
+set splitbelow      " will split bellow when calling an horizontal split
+set textwidth=0     " prevent auto wrapping"
+set wrapmargin=0    " prevent auto wrapping"
+set tw=0           " set the wrap column number to 80
+set path+=**        " will automatically add subfolder for :find command
+set wildmenu        " Display command line’s tab complete options as a menu
+set lazyredraw      " don't update screen for every macro occurence
+set ignorecase
+set encoding=utf-8
+set foldmethod=indent   "Fold based on indention levels.
+set foldnestmax=3       "Only fold up to three nested levels.
+set nofoldenable        "Disable folding by default.
+set tabstop     =4
+set softtabstop =4
+set shiftwidth  =4
+set expandtab
+set smartindent
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+set t_Co=256                " Enable 256 bits colors
+set nowrap          " will not wrap text after 80 lines
+
+set background=dark
+colorscheme atom-dark-256
+
+"SPECIFIC CONFIGURATION DEPENDING ON VIM VERSION
+if v:version >= 800
+    set belloff=all     " remove all bell sounds NOTE : SEEMS TO WORK STARTING FROM VIM8
+    set noerrorbells    " not ring the bell for error messages
+    set listchars=space:.   "set replaced chat for non visible one. Acticate with set list or set nolist
+    set signcolumn=yes  " add side column for every error/pluggin messages
+else
+   set novisualbell 
+   set noerrorbells
+endif
+
+"------------------------------------------------------------"
+"   3. MAPPINGS
+"------------------------------------------------------------"
+"
+"------------------------------------------------------------"
+"   3.1 NORMAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+" CTRL+H will clear highlight on words
+nnoremap <C-H> :nohl<CR>
+" replace <C-F> by SPACE key to move pages
+noremap <SPACE> <C-F>
+"Mapping for window navigation
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-m> <C-w>m
+nnoremap <M-l> <C-w>l
+"MAP tab movement
+nnoremap <Leader>n :tabnext<CR>
+nnoremap <Leader>b :tabprevious<CR>
+nnoremap <Leader>t :tabnew<CR>
+"Map buffer deletion clean
+nnoremap <Leader>d :bn \| bd#<CR>
+"Clean endline spaces
+nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
+" paste from clipboard
+nnoremap <Leader>p "*p
+"Replace Word under cursor
+noremap <F3> :%s/\<<C-r><C-w>\>/
+" Vimgrep shortcut
+noremap <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
+if has("win32")
+    " Same with SystemVerilog files
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.sv" <Bar> cw<CR>
+    " Same with python files
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.py" <Bar> cw<CR>
+else
+    " Same with SystemVerilog files
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.sv" <Bar> cw<CR>
+    " Same with python files
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
+endif
+
+"VIM DIFF
+if &diff
+    noremap ] ]c
+    noremap [ [c
+endif
+
+"------------------------------------------------------------"
+"   3.2 VISUAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+vnoremap <Leader>y "*y
+vnoremap <Leader>yy "*yy
+""BLOC movement
+" Allow bloc indent
+vnoremap < <gv
+vnoremap > >gv
+
+"------------------------------------------------------------"
+"   3.3 COMMAND MAPPINGS -----------------------"
+"------------------------------------------------------------"
+"map command for vertical terminal
+cnoremap vt vert term ++kill="kill" ++cols=80
+
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+"------------------------------------------------------------"
+"  4. SNIPPETS
+"------------------------------------------------------------"
+runtime snippets.vim
+
+"------------------------------------------------------------"
+"  5. CONFIG FOR FILES
+"------------------------------------------------------------"
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+filetype on
+" Enable syntax highlighting
+syntax on
+
+"-------------------------------------------------------------"
+"   6. BACKUP DIR
+"CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
+"-------------------------------------------------------------"
+if has("win32")
+  set backup
+  " the // at the end means to use path in file name like
+  " Users%tgiol%tmp%myfile.txt.swp
+  set backupdir=C:\\Temp//
+  set dir=C:\\Temp//
+  set undodir=C:\\Temp//
+else
+  set backup
+  " tell vim where to put its backup files
+  set backupdir=~/vimbackupdir//
+  " tell vim where to put swap files
+  set directory=~/vimbackupdir//
+  set undodir=~/vimbackupdir//
+endif
