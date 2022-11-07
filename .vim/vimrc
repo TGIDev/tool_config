@@ -27,6 +27,7 @@ call plug#begin()
     Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
     Plug 'https://github.com/morhetz/gruvbox'
     Plug 'arcticicestudio/nord-vim'
+    Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
 
     Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
@@ -37,14 +38,12 @@ call plug#begin()
     Plug 'jiangmiao/auto-pairs'
     Plug 'pevhall/simple_highlighting'
 
-    Plug 'https://github.com/joshdick/onedark.vim' 				" colortheme
     Plug 'https://github.com/preservim/nerdtree'				" NerdTree
     Plug 'preservim/nerdcommenter'
 
     Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
 
     " Completion / linters / formatters
-"    Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'} "TOCONFIGURE
 
     " Git
     Plug 'https://github.com/tpope/vim-fugitive'        "Git integration
@@ -93,9 +92,6 @@ set smartindent
 set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
 set t_Co=256                " Enable 256 bits colors
 set nowrap          " will not wrap text after 80 lines
-" set Vim-specific sequences for RGB colors | enable true colors
-" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
 
 " force cursor in line for insert mode and block for the rest
@@ -132,6 +128,10 @@ nnoremap <Leader>d :bn \| bd#<CR>
 nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 " paste from clipboard
 nnoremap <Leader>p "*p
+" count words
+nnoremap <F2> :%s/\<<C-r><C-w>\>//gn<CR>
+"Replace Word under cursor
+noremap <F3> :%s/\<<C-r><C-w>\>/
 "Replace Word under cursor
 noremap <F3> :%s/\<<C-r><C-w>\>/
 " Vimgrep shortcut
