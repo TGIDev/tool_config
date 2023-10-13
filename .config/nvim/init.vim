@@ -119,6 +119,7 @@ nnoremap <Leader>d :bn \| bd#<CR>
 nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 " paste from clipboard
 nnoremap <Leader>p "*p
+nnoremap <Leader>w :w<CR>
 
 "------------------------------------------------------------"
 "   3.2 VISUAL MODE MAPPINGS

@@ -10,35 +10,15 @@
 "   4. SNIPPETS
 "   5. CONFIG FOR FILES
 "   6. BACKUP DIR
-"   7. PLUGIN CONFIGURATION 
-"   8. GUI SPECIFIC
 
 "------------------------------------------------------------"
 "  1. Plugin intstall
 "------------------------------------------------------------"
 " NO PLUGIN == Minimal vim configuration
-call plug#begin()
-" Appearance
-Plug 'vim-airline/vim-airline'
-Plug 'https://github.com/vim-airline/vim-airline-themes'        " airline theme
-"
-" Utilities
-Plug 'sheerun/vim-polyglot'
-"
-Plug 'preservim/nerdcommenter'
-
-Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
-
-" Git
-Plug 'https://github.com/tpope/vim-fugitive'        "Git integration
-Plug 'airblade/vim-gitgutter'
-
-call plug#end()
 "------------------------------------------------------------"
 "  2. SETs
 "------------------------------------------------------------"
 
-"---Global---"
 set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
 set encoding=utf-8
 set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
@@ -49,44 +29,37 @@ set cul             " highlight current line
 " set cc=+20          " put a ruler on max line width
 set number          " set numbering lines
 set relativenumber  " set the relative number for curent line
-set incsearch       " will start highlight the current search word if present on the page
-set t_Co=256        " Enable 256 bits colors
-set background=dark
-set wildmenu        " Display command line’s tab complete options as a menu
-set lazyredraw      " don't update screen for every macro occurence
-set foldmethod=indent   "Fold based on indention levels.
-set foldnestmax=3       "Only fold up to three nested levels.
-set nofoldenable        "Disable folding by default.
-set showmatch
-" colorscheme onehalfdark
-colorscheme molokai
-
-"---File mngt---"
 set hidden          " keeps every buffer inside even if not saved
+
 set autowrite       " Auto write the file content on each window view changes
 set smartcase       " do a capital search only if capitals on the search
+set incsearch       " will start highlight the current search word if present on the page
 set scrolloff=20    " start scrolling the page 8line before bottom
 let mapleader =","  " map leader to comma
 set splitright      " will split only on the right hand side when calling a vsplit
 set splitbelow      " will split bellow when calling an horizontal split
-
-"---Text typing---"
 set textwidth=0     " prevent auto wrapping"
 set wrapmargin=0    " prevent auto wrapping"
-set tw=0            " set the wrap column number to 80
+set tw=0           " set the wrap column number to 80
 set path+=**        " will automatically add subfolder for :find command
+set wildmenu        " Display command line’s tab complete options as a menu
+set lazyredraw      " don't update screen for every macro occurence
 set ignorecase
-set tabstop     =3
-set softtabstop =3
-set shiftwidth  =3
-set nowrap          " will not wrap text after 80 lines
+set encoding=utf-8
+set foldmethod=indent   "Fold based on indention levels.
+set foldnestmax=3       "Only fold up to three nested levels.
+set nofoldenable        "Disable folding by default.
+set tabstop     =4
+set softtabstop =4
+set shiftwidth  =4
+set expandtab
 set smartindent
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+set t_Co=256                " Enable 256 bits colors
+set nowrap          " will not wrap text after 80 lines
 
-
-" Change cursor style in insert mode
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
-
+set background=dark
+colorscheme atom-dark-256
 
 "SPECIFIC CONFIGURATION DEPENDING ON VIM VERSION
 if v:version >= 800
@@ -95,7 +68,7 @@ if v:version >= 800
     set listchars=space:.   "set replaced chat for non visible one. Acticate with set list or set nolist
     set signcolumn=yes  " add side column for every error/pluggin messages
 else
-   set novisualbell
+   set novisualbell 
    set noerrorbells
 endif
 
@@ -107,8 +80,6 @@ endif
 "   3.1 NORMAL MODE MAPPINGS
 "------------------------------------------------------------"
 "
-" SAVE
-nnoremap <Leader>w :w<CR>
 " CTRL+H will clear highlight on words
 nnoremap <C-H> :nohl<CR>
 " replace <C-F> by SPACE key to move pages
@@ -130,10 +101,6 @@ nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>
 nnoremap <Leader>p "*p
 "Replace Word under cursor
 noremap <F3> :%s/\<<C-r><C-w>\>/
-"Count pattern
-noremap <F2> :%s/\<<C-r><C-w>\>//gn<CR>
-"Switch to previous buffer
-nnoremap <leader>< :b#<CR>
 " Vimgrep shortcut
 noremap <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
 if has("win32")
@@ -151,6 +118,8 @@ else
     " Same with python files
     noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
 endif
+
+set pastetoggle=<F1>
 
 "VIM DIFF
 if &diff
@@ -232,9 +201,13 @@ let g:NERDSpaceDelims = 1
 "------------------------------------------------------------"
 "   7.2 Nerdtree settings
 "------------------------------------------------------------"
+" nnoremap <leader>f :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTree<CR>
+" nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
+" let g:NERDTreeWinSize= 50
 "" --- netrw ---
-" nnoremap <C-t> :Vex<CR>
-noremap <silent> <C-t> :call ToggleNetrw()<CR>
+nnoremap <C-t> :Vex<CR>
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -245,25 +218,6 @@ let g:netrw_winsize = 25
     " autocmd!
     " autocmd VimEnter * :Vexplore
 " augroup END
-let g:NetrwIsOpen=0
-
-function! ToggleNetrw()
-    if g:NetrwIsOpen
-        let i = bufnr("$")
-        while (i >= 1)
-            if (getbufvar(i, "&filetype") == "netrw")
-                silent exe "bwipeout " . i 
-            endif
-            let i-=1
-        endwhile
-        let g:NetrwIsOpen=0
-    else
-        let g:NetrwIsOpen=1
-        silent Lexplore
-    endif
-endfunction
-
-" Add your own mapping. For example:
 
 "------------------------------------------------------------"
 "   7.3 Airline settings
@@ -280,28 +234,4 @@ let g:ctrlp_working_path_mode = 'a'     " Find in the directory of the current f
 nnoremap <C-b> :CtrlPBuffer<CR>
 
 
-"------------------------------------------------------------"
-"   8. GUI SPECIFIC
-"------------------------------------------------------------" 
-
-if has("gui_running")
-   if &t_Co > 2 
-     " Switch on highlighting the last used search pattern.
-     set hlsearch
-   endif
-   map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
-   set guifont=Lucida_Console:h11:cANSI:qDRAFT
-   " turn off scrollbars in gvim
-   set guioptions-=r
-   set guioptions-=L
-   " turn off the toolbar
-   set guioptions-=T
-   " disable tooltip helpers
-   set noballooneval
-   " quick windows clipboard<->buffer access:
-   vnoremap <C-C> "+y
-   map <C-V>   "+gP
-   cmap <C-V>  <C-R>+
-   imap <C-V>      <Esc>"+gpa
-endif
 
