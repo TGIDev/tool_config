@@ -143,6 +143,7 @@ vnoremap > >gv
 "------------------------------------------------------------"
 "map command for vertical terminal
 cnoremap vt vert term ++kill="kill" ++cols=80
+cnoremap st term ++kill="kill" ++rows=12
 
 augroup myTodo
   autocmd!
