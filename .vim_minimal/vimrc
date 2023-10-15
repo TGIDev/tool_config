@@ -47,6 +47,7 @@ set lazyredraw      " don't update screen for every macro occurence
 set ignorecase
 set encoding=utf-8
 set foldmethod=indent   "Fold based on indention levels.
+set foldlevel=99
 set foldnestmax=3       "Only fold up to three nested levels.
 set nofoldenable        "Disable folding by default.
 set tabstop     =4
@@ -119,6 +120,7 @@ else
     noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
 endif
 
+nnoremap <leader>f za
 set pastetoggle=<F1>
 
 "VIM DIFF
