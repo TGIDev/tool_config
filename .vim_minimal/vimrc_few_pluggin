@@ -1,0 +1,284 @@
+" -----------------------------------------"
+" USER ADDED CONFIG
+" -----------------------------------------"
+" --- SUMMAR ---
+"   2. SETs
+"   3. MAPPINGS
+"       3.1 NORMAL MODE MAPPINGS
+"       3.2 VISUAL MODE MAPPINGS
+"       3.3 COMMAND MODE MAPPINGS
+"   4. SNIPPETS
+"   5. CONFIG FOR FILES
+"   6. BACKUP DIR
+"   7. PULGING CONFIG
+"       7.1 NERcommenter
+"       7.2 Airline settings
+"       7.3 CTRLP
+"       7.4 ALE
+
+"------------------------------------------------------------"
+"  1. Plugin intstall
+"------------------------------------------------------------"
+let mapleader =","  " map leader to comma
+
+call plug#begin()
+    " Utilities
+    Plug 'sheerun/vim-polyglot'
+    "
+    Plug 'preservim/nerdcommenter'
+
+    " Appearance
+
+    Plug 'vim-airline/vim-airline'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'https://github.com/vim-airline/vim-airline-themes'		" airline theme
+
+    " Utilities
+    Plug 'https://github.com/kien/ctrlp.vim'                    " Project finder
+
+    "ALE
+    Plug 'dense-analysis/ale'
+
+    call plug#end()
+"------------------------------------------------------------"
+"  2. SETs
+"------------------------------------------------------------"
+
+set nocompatible    " Set 'nocompatible' to ward off unexpected things that your distro might
+set encoding=utf-8
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+set expandtab
+set autoindent
+
+"---apperance---"
+set cul             " highlight current line
+set cc=120          " put a ruler on max line width
+set number          " set numbering lines
+set relativenumber  " set the relative number for curent line
+set hidden          " keeps every buffer inside even if not saved
+set hlsearch
+
+set autowrite       " Auto write the file content on each window view changes
+set smartcase       " do a capital search only if capitals on the search
+set incsearch       " will start highlight the current search word if present on the page
+set scrolloff=20    " start scrolling the page 8line before bottom
+set splitright      " will split only on the right hand side when calling a vsplit
+set splitbelow      " will split bellow when calling an horizontal split
+set textwidth=0     " prevent auto wrapping"
+set wrapmargin=0    " prevent auto wrapping"
+set tw=0           " set the wrap column number to 80
+set path+=**        " will automatically add subfolder for :find command
+set wildmenu        " Display command line’s tab complete options as a menu
+set lazyredraw      " don't update screen for every macro occurence
+set ignorecase
+set encoding=utf-8
+set foldmethod=indent   "Fold based on indention levels.
+set foldlevel=99
+set foldnestmax=3       "Only fold up to three nested levels.
+set nofoldenable        "Disable folding by default.
+set tabstop     =4
+set softtabstop =4
+set shiftwidth  =4
+set smartindent
+set clipboard=unnamedplus   " enables the clipboard between Vim/Neovim and other applications.
+set t_Co=256                " Enable 256 bits colors
+set nowrap          " will not wrap text after 80 lines
+
+set background=dark
+colorscheme atom-dark-256
+
+"SPECIFIC CONFIGURATION DEPENDING ON VIM VERSION
+if v:version >= 800
+    set belloff=all     " remove all bell sounds NOTE : SEEMS TO WORK STARTING FROM VIM8
+    set noerrorbells    " not ring the bell for error messages
+    set listchars=space:.   "set replaced chat for non visible one. Acticate with set list or set nolist
+    set signcolumn=yes  " add side column for every error/pluggin messages
+else
+   set novisualbell
+   set noerrorbells
+endif
+
+
+"------------------------------------------------------------"
+"   3. MAPPINGS
+"------------------------------------------------------------"
+"
+"------------------------------------------------------------"
+"   3.1 NORMAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+nnoremap <Leader>w :w<CR>
+" CTRL+H will clear highlight on words
+nnoremap <C-H> :nohl<CR>
+" replace <C-F> by SPACE key to move pages
+noremap <SPACE> <C-F>
+"Mapping for window navigation
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-m> <C-w>m
+nnoremap <M-l> <C-w>l
+"MAP tab movement
+nnoremap <Leader>n :tabnext<CR>
+nnoremap <Leader>b :tabprevious<CR>
+nnoremap <Leader>t :tabnew<CR>
+"Map buffer deletion clean
+nnoremap <Leader>d :bn \| bd#<CR>
+"Clean endline spaces
+nnoremap <Leader>ds :%s/\s\+$//e<CR>:nohl<CR>:w<CR>
+" paste from clipboard
+nnoremap <Leader>y "*y
+nnoremap <Leader>p "*p
+nnoremap <Leader>Y "+y
+nnoremap <Leader>P "+p
+"Replace Word under cursor
+noremap <F3> :%s/\<<C-r><C-w>\>/
+" Vimgrep shortcut
+noremap <F4> :execute "noautocmd vimgrep /".expand("<cword>")."/j **" <Bar> cw<CR>
+if has("win32")
+    " Same with vhdl files
+    noremap <F5>vh :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.vhd" <Bar> cw<CR>
+    " Same with SystemVerilog files
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.sv" <Bar> cw<CR>
+    " Same with python files
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **\*.py" <Bar> cw<CR>
+else
+    " Same with vhdl files
+    noremap <F5>vh :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.vhd" <Bar> cw<CR>
+    " Same with SystemVerilog files
+    noremap <F5>sv :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.sv" <Bar> cw<CR>
+    " Same with python files
+    noremap <F5>py :execute "noautocmd vimgrep /" . expand("<cword>") . "/j **/*.py" <Bar> cw<CR>
+endif
+
+nnoremap <leader>f za
+set pastetoggle=<F1>
+
+"VIM DIFF
+if &diff
+    nnoremap ] ]c
+    nnoremap [ [c
+endif
+
+" cursor shape
+" Replace Mode
+let &t_SR .= "\<Esc>[4 q"
+" Insert Mode
+let &t_SI .= "\<Esc>[6 q"
+" Normal Mode
+let &t_EI .= "\<Esc>[1 q"
+
+"------------------------------------------------------------"
+"   3.2 VISUAL MODE MAPPINGS
+"------------------------------------------------------------"
+"
+vnoremap <Leader>y "*y
+vnoremap <Leader>yy "*yy
+""BLOC movement
+" Allow bloc indent
+vnoremap < <gv
+vnoremap > >gv
+
+"------------------------------------------------------------"
+"   3.3 COMMAND MAPPINGS -----------------------"
+"------------------------------------------------------------"
+"map command for vertical terminal
+cnoremap vt vert term ++kill="kill" ++cols=80
+cnoremap st term ++kill="kill" ++rows=12
+cnoremap ds %s/\s\+$//e<CR>:nohl<CR>
+
+
+augroup myTodo
+  autocmd!
+  autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+"------------------------------------------------------------"
+"  4. SNIPPETS
+"------------------------------------------------------------"
+runtime snippets.vim
+
+"------------------------------------------------------------"
+"  5. CONFIG FOR FILES
+"------------------------------------------------------------"
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+filetype indent plugin on
+filetype on
+" Enable syntax highlighting
+syntax on
+
+"-------------------------------------------------------------"
+"   6. BACKUP DIR
+"CAUTION : THIS HAVE TO BE ADAPTED TO THE SYTEM TYPE
+"-------------------------------------------------------------"
+if has("win32")
+  set backup
+  " the // at the end means to use path in file name like
+  " Users%tgiol%tmp%myfile.txt.swp
+  set backupdir=C:\\Temp//
+  set dir=C:\\Temp//
+  set undodir=C:\\Temp//
+else
+  set backup
+  " tell vim where to put its backup files
+  set backupdir=~/vimbackupdir//
+  " tell vim where to put swap files
+  set directory=~/vimbackupdir//
+  set undodir=~/vimbackupdir//
+endif
+
+
+"------------------------------------------------------------"
+"   7. PLUGIN CONFIG
+"------------------------------------------------------------"
+"------------------------------------------------------------"
+"   7.1 NERcommenter
+"------------------------------------------------------------"
+"------------------------------------------------------------"
+"   7.2 Airline settings
+"------------------------------------------------------------"
+let g:airline_theme='deus'
+let g:airline_section_c_only_filename = 1
+
+"------------------------------------------------------------"
+"   7.3 CTRLP
+"------------------------------------------------------------"
+"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode = 'a'     " Find in the directory of the current file if no folder specified
+" Search into buffer using Ctrl+B
+nnoremap <C-b> :CtrlPBuffer<CR>
+
+"------------------------------------------------------------"
+"   7.4 ALE
+"------------------------------------------------------------"
+
+" turn on the syntax checker
+syntax on
+
+" don't check syntax immediately on open or on quit
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+
+" error symbol to use in sidebar
+let g:ale_sign_error = '☢️'
+let g:ale_sign_warning = '⚡'
+
+" show number of errors
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    return l:counts.total == 0 ? 'OK' : printf(
+        \   '%d⨉ %d⚠ ',
+        \   all_non_errors,
+        \   all_errors
+        \)
+endfunction
+set statusline+=%=
+set statusline+=\ %{LinterStatus()}
+
+" format error strings
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
