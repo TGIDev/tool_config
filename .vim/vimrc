@@ -164,6 +164,8 @@ vnoremap <Leader>yy "*yy
 " Allow bloc indent
 vnoremap < <gv
 vnoremap > >gv
+"" count visual char selection
+set showcmd
 
 "------------------------------------------------------------"
 "   3.3 COMMAND MAPPINGS -----------------------"
